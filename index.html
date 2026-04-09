@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuHei&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五行炼丹炉 - 赛博考古</title>
+    <style>
+        /* === 全局基础样式 === */
+        body {
+            color: #2c2925;
+            font-family: 'ZCOOL KuHei', "YouYuan", "Microsoft YaHei", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            background-image: url('./assets/bg.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #000;
+            box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #ddd;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        /* === 漫画风主舞台 (环绕UI) === */
+        .comic-stage {
+            position: relative;
+
+            background-image: url('./assets/ui-scroll.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+
+            width: 960px;
+            height: 660px;
+            filter: drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.4));
+            margin-bottom: 20px;
+        }
+
+        /* 炼丹炉容器 */
+        #cauldron-container {
+            position: absolute;
+            width: 180px;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #cauldron-img {
+            width: 100%;
+            height: auto;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 15px 25px rgba(255, 100, 0, 0.5));
+            transition: all 0.3s;
+        }
+
+        #cauldron-img.absorbing {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 40px rgba(255, 200, 0, 0.9));
+        }
+
+        #cauldron-img.shaking {
+            animation: shake 0.5s infinite;
+        }
+
+        /* 状态文字 */
+        #cauldron-status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 175px);
+            color: #333;
+            font-weight: 900;
+            text-shadow: 0 1px 1px #fff;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            z-index: 30;
+            transition: all 0.3s ease;
+        }
+
+        /* 五行图标环绕 */
+        .element-icon {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            z-index: 20;
+            cursor: pointer;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 50%;
+            box-shadow: 3px 3px 0px #000;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            top: 50%;
+            left: 50%;
+            margin-top: -35px;
+            margin-left: -35px;
+
+            transform: rotate(var(--angle)) translateY(-160px) rotate(calc(-1 * var(--angle)));
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .element-icon img {
+            width: 65%;
+            height: 65%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        .element-icon:hover {
+            background: #ffeebf;
+            transform: rotate(var(--angle)) translateY(-170px) rotate(calc(-1 * var(--angle))) scale(1.1);
+        }
+
+        /* === 收藏库与弹窗 === */
+        #collection-area {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fffdf8;
+            border: 2px solid #d5c8b5;
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .collection-item {
+            padding: 5px 10px;
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .collection-item:hover {
+            background: #c3e6cb;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-panel {
+            margin-top: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 600px;
+            background: #fffaf0;
+            border-left: 5px solid #8b3a3a;
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        /* 动画关键帧 */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>鼎炉炼万物</h1>
+    <div class="subtitle">点击周围元素或造物库物品投入炉中，探寻中华造物之秘</div>
+
+    <!-- 核心舞台 -->
+    <div id="game-stage" class="comic-stage">
+        <!-- 炼丹炉 -->
+        <div id="cauldron-container">
+            <img src="./assets/cauldron.png" alt="炼丹炉" id="cauldron-img" />
+        </div>
+
+        <div id="cauldron-status">等待投入材料...</div>
+
+        <!-- 五行图标 -->
+        <div class="element-icon" style="--angle: 0deg;" data-name="金 🪙">
+            <img src="./assets/icon-metal.png" alt="金">
+        </div>
+        <div class="element-icon" style="--angle: 72deg;" data-name="木 🪵">
+            <img src="./assets/icon-wood.png" alt="木">
+        </div>
+        <div class="element-icon" style="--angle: 144deg;" data-name="水 💧">
+            <img src="./assets/icon-water.png" alt="水">
+        </div>
+        <div class="element-icon" style="--angle: 216deg;" data-name="火 🔥">
+            <img src="./assets/icon-fire.png" alt="火">
+        </div>
+        <div class="element-icon" style="--angle: 288deg;" data-name="土 🪨">
+            <img src="./assets/icon-earth.png" alt="土">
+        </div>
+    </div>
+
+    <!-- 炼化成功的信息展示 -->
+    <div class="info-panel" id="info-panel">
+        <h3 style="margin-top: 0;">📜 天工万物志</h3>
+        <p id="culture-text"></p>
+    </div>
+
+    <!-- 玩家获得的万物库 -->
+    <div id="collection-area">
+        <div style="width: 100%; color: #666; font-size: 14px; margin-bottom: 5px;">我的造物库 (点击物品可继续炼化)：</div>
+    </div>
+
+    <script>
+        // === 游戏配置 ===
+        const unlockedItems = new Set();
+        const API_KEY = "sk-tvefwzmlfsbzrqkyudqwglgwcpolupltomaexbvhqjydkaxe";
+        const API_URL = "https://api.siliconflow.cn/v1/chat/completions";
+        const MODEL_NAME = "Qwen/Qwen3-8B";
+
+        const localRecipes = {
+            "木 🪵,水 💧": {
+                name: "草木",
+                /* 🌟 修改点 1：本地数据更新为带朝代作者的格式 */
+                poem: "天街小雨润如酥，草色遥看近却无。 —— [唐] 韩愈",
+                desc: "《管子》云：水润木生，此乃万物生机之始。",
+                tiangong: "《天工开物》载：凡木之性，得水而荣，膏液内充，发为枝叶。乃天地化育之初相。",
+                wiki: "植物（Plants）是生命的主要形态之一，主要通过光合作用获取能量。"
+            }
+        };
+
+        // 获取 DOM
+        const elementIcons = document.querySelectorAll('.element-icon');
+        const cauldronImg = document.getElementById('cauldron-img');
+        const statusText = document.getElementById('cauldron-status');
+        const infoPanel = document.getElementById('info-panel');
+        const cultureText = document.getElementById('culture-text');
+        const collectionArea = document.getElementById('collection-area');
+
+        let currentRecipe = [];
+        let isCrafting = false;
+
+        function addIngredient(elementName) {
+            if (isCrafting || currentRecipe.length >= 2) return;
+
+            currentRecipe.push(elementName);
+
+            statusText.innerText = `已投入: ${currentRecipe.join(' + ')}`;
+            cauldronImg.classList.add('absorbing');
+            setTimeout(() => cauldronImg.classList.remove('absorbing'), 300);
+
+            if (currentRecipe.length === 2) {
+                isCrafting = true;
+                setTimeout(startAIAlchemy, 800);
+            }
+        }
+
+        elementIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                const elementName = this.getAttribute('data-name');
+                addIngredient(elementName);
+            });
+        });
+
+        collectionArea.addEventListener('click', function (e) {
+            if (e.target.classList.contains('collection-item')) {
+                const itemName = e.target.innerText;
+                addIngredient(itemName);
+            }
+        });
+
+        // 触发AI炼丹
+        async function startAIAlchemy() {
+            statusText.innerText = "🔥 三昧真火炼化中...";
+            statusText.style.color = "#d9534f";
+            cauldronImg.classList.add('shaking');
+
+            let formulaKey = currentRecipe.sort().join(',');
+            let resultData = localRecipes[formulaKey];
+
+            try {
+                if (!resultData) {
+                    /* 🌟 修改点 2：在系统提示词中，加上严苛的真实性约束，并约定找不到时返回空 */
+                    const systemPrompt = `你是一个中国古代五行炼丹游戏的核心引擎。玩家正在尝试融合【${currentRecipe[0]}】和【${currentRecipe[1]}】。请根据常识推演出一个合理的新事物。
+【规则】：禁止直接拼接！必须发生物理或哲学质变！只包含1个Emoji。禁止输出思考过程。
+【输出格式】：返回纯JSON，字段: name, poem, desc, tiangong, wiki。不带markdown。
+【重要约束】：
+1. tiangong 字段请用类似《天工开物》等古代文言文典籍的口吻解释原理。
+2. poem 字段必须是历史上真实的古诗词，禁止你自己编造！格式必须为："诗句内容 —— [朝代] 作者"。如果该物品极其罕见，在真实历史中找不到相关诗句，请直接让该字段为空字符串 ""，绝对不能造假。`;
+
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: MODEL_NAME,
+                            messages: [{ role: "user", content: systemPrompt }],
+                            temperature: 0.3 // 调低 temperature 让模型更严谨，减少幻觉
+                        })
+                    });
+
+                    const data = await response.json();
+                    let aiText = data.choices[0].message.content.trim();
+                    const jsonMatch = aiText.match(/\{[\s\S]*\}/);
+                    resultData = JSON.parse(jsonMatch ? jsonMatch[0] : aiText);
+
+                    localRecipes[formulaKey] = resultData;
+                }
+
+                createSuccessUI(resultData);
+
+            } catch (error) {
+                console.error("炼化失败:", error);
+                alert("💨 炉温不稳，炼化失败。请检查网络或控制台。");
+            } finally {
+                resetFurnace();
+            }
+        }
+
+        // 渲染成功UI
+        function createSuccessUI(data) {
+            infoPanel.style.display = 'block';
+
+            /* 🌟 修改点 3：前端容错渲染，如果 poem 是空的，直接不显示那一行 */
+            let poemHTML = "";
+            if (data.poem && data.poem.trim() !== "") {
+                poemHTML = `<i style="color: #555;">「${data.poem}」</i><br><br>`;
+            }
+
+            cultureText.innerHTML = `
+                <strong style="font-size: 1.2em; color: #d9534f;">【${data.name}】</strong><br><br>
+                ${poemHTML}
+                <span style="color: #333;"><strong>☯️ 五行释义：</strong>${data.desc}</span><br><br>
+                <span style="color: #8b3a3a; font-weight: bold;">📖 典籍考究：</span>
+                <span style="color: #5c4033; font-style: italic;">${data.tiangong}</span><br><br>
+                <span style="color: #2c3e50; font-size: 0.9em; display: inline-block;">
+                    <strong>📚 百科：</strong>${data.wiki}
+                </span>
+            `;
+
+            if (!unlockedItems.has(data.name)) {
+                unlockedItems.add(data.name);
+                collectionArea.insertAdjacentHTML('beforeend', `<div class="collection-item">${data.name}</div>`);
+            }
+        }
+
+        // 重置炉子
+        function resetFurnace() {
+            currentRecipe = [];
+            isCrafting = false;
+            cauldronImg.classList.remove('shaking');
+            statusText.innerText = "等待投入材料...";
+            statusText.style.color = "#333";
+        }
+    </script>
+</body>
+
+</html>
