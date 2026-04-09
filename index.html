@@ -244,8 +244,8 @@
 
 <body>
 
-    <h1>鼎炉炼万物</h1>
-    <div class="subtitle">点击周围元素或造物库物品投入炉中，探寻中华造物之秘</div>
+    <h1>天工造物志</h1>
+    <div class="subtitle">点击周围元素或造物库物品投入炉中，重现中华古代硬核科技</div>
 
     <!-- 核心舞台 -->
     <div id="game-stage" class="comic-stage">
@@ -282,7 +282,7 @@
 
     <!-- 玩家获得的万物库 -->
     <div id="collection-area">
-        <div style="width: 100%; color: #666; font-size: 14px; margin-bottom: 5px;">我的造物库 (点击物品可继续炼化)：</div>
+        <div style="width: 100%; color: #666; font-size: 14px; margin-bottom: 5px;">我的造物库 (点击物品可继续研发)：</div>
     </div>
 
     <script>
@@ -292,14 +292,14 @@
         const API_URL = "https://api.siliconflow.cn/v1/chat/completions";
         const MODEL_NAME = "Qwen/Qwen3-8B";
 
+        // 🌟 核心修改 1：更改初始默认配方，契合“古代硬核科技”主题
         const localRecipes = {
             "木 🪵,水 💧": {
-                name: "草木",
-                /* 🌟 修改点 1：本地数据更新为带朝代作者的格式 */
-                poem: "天街小雨润如酥，草色遥看近却无。 —— [唐] 韩愈",
-                desc: "《管子》云：水润木生，此乃万物生机之始。",
-                tiangong: "《天工开物》载：凡木之性，得水而荣，膏液内充，发为枝叶。乃天地化育之初相。",
-                wiki: "植物（Plants）是生命的主要形态之一，主要通过光合作用获取能量。"
+                name: "筒车 🎡",
+                poem: "连筒流水唯将绿，拔刺飞凫不受呼。 —— [唐] 杜甫",
+                classic_quote: "《农政全书》载：水轮转水，筒下承水，激轮旋转，随流自覆，日夜不息。",
+                detail: "筒车是中国古代一项极为重要的农业灌溉工具。它利用水流的冲击力转动轮盘，轮盘上的竹筒在低处舀水，转至高处时自动倾泻入水槽，从而实现无动力的自动提水灌溉，极大地促进了古代农业的发展。",
+                wiki: "筒车，又称流水筒车，是一种以水流作动力，取水灌田的农具。"
             }
         };
 
@@ -345,7 +345,7 @@
 
         // 触发AI炼丹
         async function startAIAlchemy() {
-            statusText.innerText = "🔥 三昧真火炼化中...";
+            statusText.innerText = "⚙️ 考究典籍推演中...";
             statusText.style.color = "#d9534f";
             cauldronImg.classList.add('shaking');
 
@@ -354,13 +354,19 @@
 
             try {
                 if (!resultData) {
-                    /* 🌟 修改点 2：在系统提示词中，加上严苛的真实性约束，并约定找不到时返回空 */
-                    const systemPrompt = `你是一个中国古代五行炼丹游戏的核心引擎。玩家正在尝试融合【${currentRecipe[0]}】和【${currentRecipe[1]}】。请根据常识推演出一个合理的新事物。
-【规则】：禁止直接拼接！必须发生物理或哲学质变！只包含1个Emoji。禁止输出思考过程。
-【输出格式】：返回纯JSON，字段: name, poem, desc, tiangong, wiki。不带markdown。
+                    // 🌟 核心修改 2：重写 Prompt，强制关联古代八大科学名著，并要求输出 detail 详细介绍
+                    const systemPrompt = `你是一个中国古代科技与造物游戏的核心引擎。玩家正在尝试融合【${currentRecipe[0]}】和【${currentRecipe[1]}】。
+请推演出一项【中国古代真实的造物、发明或农业/工业技术】。
+
 【重要约束】：
-1. tiangong 字段请用类似《天工开物》等古代文言文典籍的口吻解释原理。
-2. poem 字段必须是历史上真实的古诗词，禁止你自己编造！格式必须为："诗句内容 —— [朝代] 作者"。如果该物品极其罕见，在真实历史中找不到相关诗句，请直接让该字段为空字符串 ""，绝对不能造假。`;
+1. 生成的物品或技术必须能从“中国古代科学八大名著”（如《天工开物》《梦溪笔谈》《齐民要术》《本草纲目》《农政全书》《九章算术》《营造法式》《水经注》等）中找到渊源。
+2. 禁止直接拼接！必须发生符合历史或物理的质变！只包含1个Emoji。禁止输出思考过程。
+3. 输出格式为纯JSON，不带markdown，字段如下：
+   - name: 物品/技术名称（带1个Emoji）
+   - poem: 历史上真实的古诗词（格式："诗句 —— [朝代] 作者"）。如果该发明极为生僻找不到相关真实诗词，必须留空 ""，绝对不能造假编造。
+   - classic_quote: 引用八大名著中的原文或仿古文言文来说明其出处与原理，必须标明书名（如“《天工开物》载：...”）。
+   - detail: 用现代白话文详细介绍这件物品或技术的历史背景、工作原理及伟大意义（100字左右）。
+   - wiki: 简短的现代百科定义。`;
 
                     const response = await fetch(API_URL, {
                         method: 'POST',
@@ -371,7 +377,7 @@
                         body: JSON.stringify({
                             model: MODEL_NAME,
                             messages: [{ role: "user", content: systemPrompt }],
-                            temperature: 0.3 // 调低 temperature 让模型更严谨，减少幻觉
+                            temperature: 0.3 // 保持低随机性，确保历史严谨性
                         })
                     });
 
@@ -386,8 +392,8 @@
                 createSuccessUI(resultData);
 
             } catch (error) {
-                console.error("炼化失败:", error);
-                alert("💨 炉温不稳，炼化失败。请检查网络或控制台。");
+                console.error("研发失败:", error);
+                alert("💨 典籍查阅失败，请检查网络或控制台。");
             } finally {
                 resetFurnace();
             }
@@ -397,18 +403,18 @@
         function createSuccessUI(data) {
             infoPanel.style.display = 'block';
 
-            /* 🌟 修改点 3：前端容错渲染，如果 poem 是空的，直接不显示那一行 */
             let poemHTML = "";
             if (data.poem && data.poem.trim() !== "") {
                 poemHTML = `<i style="color: #555;">「${data.poem}」</i><br><br>`;
             }
 
+            // 🌟 核心修改 3：去掉五行释义，加入 detail 详细介绍的排版
             cultureText.innerHTML = `
                 <strong style="font-size: 1.2em; color: #d9534f;">【${data.name}】</strong><br><br>
                 ${poemHTML}
-                <span style="color: #333;"><strong>☯️ 五行释义：</strong>${data.desc}</span><br><br>
                 <span style="color: #8b3a3a; font-weight: bold;">📖 典籍考究：</span>
-                <span style="color: #5c4033; font-style: italic;">${data.tiangong}</span><br><br>
+                <span style="color: #5c4033; font-style: italic;">${data.classic_quote}</span><br><br>
+                <span style="color: #333;"><strong>⚙️ 详细介绍：</strong>${data.detail}</span><br><br>
                 <span style="color: #2c3e50; font-size: 0.9em; display: inline-block;">
                     <strong>📚 百科：</strong>${data.wiki}
                 </span>
