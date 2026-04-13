@@ -5,9 +5,8 @@
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuHei&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>五行炼丹炉 - 赛博考古</title>
+    <title>天工造物志 - 火候机制进化版</title>
     <style>
-        /* === 全局基础样式 === */
         body {
             color: #2c2925;
             font-family: 'ZCOOL KuHei', "YouYuan", "Microsoft YaHei", sans-serif;
@@ -17,56 +16,126 @@
             padding: 20px;
             margin: 0;
             background-image: url('./assets/bg.png');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #000;
-            box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2);
+            background-color: #1a1a1a;
         }
 
         h1 {
-            color: #fff;
+            color: #f4d03f;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             margin-bottom: 5px;
+            letter-spacing: 2px;
         }
 
         .subtitle {
-            color: #ddd;
-            margin-bottom: 30px;
+            color: #ccc;
+            margin-bottom: 15px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
-        /* === 漫画风主舞台 (环绕UI) === */
-        .comic-stage {
-            position: relative;
-
-            background-image: url('./assets/ui-scroll.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-
-            width: 960px;
-            height: 660px;
-            filter: drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.4));
-            margin-bottom: 20px;
+        .resource-bar {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            color: #f4d03f;
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: 2px solid #555;
+            margin-bottom: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* 炼丹炉容器 */
+        .epoch-banner {
+            background: linear-gradient(90deg, rgba(75, 29, 29, 0.9), rgba(139, 58, 58, 0.9), rgba(75, 29, 29, 0.9));
+            border: 2px solid #f4d03f;
+            border-radius: 8px;
+            padding: 10px 40px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .epoch-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f4d03f;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .epoch-books {
+            font-size: 1rem;
+            color: #ffebcd;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .game-layout {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .quest-panel {
+            width: 250px;
+            background: rgba(255, 250, 240, 0.9);
+            border: 2px dashed #8b3a3a;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .quest-panel h3 {
+            margin-top: 0;
+            color: #8b3a3a;
+            border-bottom: 1px solid #d5c8b5;
+            padding-bottom: 5px;
+        }
+
+        .quest-item {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            border-left: 3px solid #f4d03f;
+        }
+
+        .quest-item strong {
+            color: #333;
+        }
+
+        .comic-stage {
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 5px solid #444;
+            width: 500px;
+            height: 500px;
+            box-shadow: inset 0 0 50px #000, 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
         #cauldron-container {
             position: absolute;
-            width: 180px;
-            z-index: 10;
+            width: 140px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -40%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
         #cauldron-img {
             width: 100%;
-            height: auto;
             animation: float 4s ease-in-out infinite;
             filter: drop-shadow(0 15px 25px rgba(255, 100, 0, 0.5));
             transition: all 0.3s;
@@ -78,78 +147,154 @@
         }
 
         #cauldron-img.shaking {
-            animation: shake 0.5s infinite;
+            animation: shake 0.3s infinite;
         }
 
-        /* 状态文字 */
         #cauldron-status {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, 175px);
+            transform: translate(-50%, 140px);
             color: #333;
-            font-weight: 900;
-            text-shadow: 0 1px 1px #fff;
-            font-size: 1.2rem;
-            white-space: nowrap;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 6px 16px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
             border-radius: 20px;
             border: 2px solid #000;
-            box-shadow: 3px 3px 0px #000;
-            z-index: 30;
-            transition: all 0.3s ease;
+            white-space: nowrap;
+            z-index: 10;
         }
 
-        /* 五行图标环绕 */
         .element-icon {
             position: absolute;
-            width: 70px;
-            height: 70px;
-            z-index: 20;
-            cursor: pointer;
+            width: 60px;
+            height: 60px;
             background: #fff;
             border: 3px solid #000;
             border-radius: 50%;
-            box-shadow: 3px 3px 0px #000;
-
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-
+            font-size: 1.5rem;
             top: 50%;
             left: 50%;
-            margin-top: -35px;
-            margin-left: -35px;
-
-            transform: rotate(var(--angle)) translateY(-160px) rotate(calc(-1 * var(--angle)));
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .element-icon img {
-            width: 65%;
-            height: 65%;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+            margin-top: -30px;
+            margin-left: -30px;
+            transform: rotate(var(--angle)) translateY(-200px) rotate(calc(-1 * var(--angle)));
+            transition: all 0.2s;
         }
 
         .element-icon:hover {
             background: #ffeebf;
-            transform: rotate(var(--angle)) translateY(-170px) rotate(calc(-1 * var(--angle))) scale(1.1);
+            transform: rotate(var(--angle)) translateY(-210px) rotate(calc(-1 * var(--angle))) scale(1.1);
         }
 
-        /* === 收藏库与弹窗 === */
-        #collection-area {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
+        /* --- 新增：QTE 火候系统样式 --- */
+        #qte-container {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            background: rgba(30, 30, 30, 0.95);
             padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #f4d03f;
+            box-shadow: 0 0 20px rgba(244, 208, 63, 0.5);
+            z-index: 50;
+            display: none;
+        }
+
+        #qte-text {
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        #qte-bar {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            background: #c0392b;
+            border-radius: 10px;
+            border: 2px solid #555;
+            overflow: hidden;
+        }
+
+        #qte-zone-safe {
+            position: absolute;
+            left: 20%;
+            width: 60%;
+            height: 100%;
+            background: #27ae60;
+        }
+
+        #qte-zone-perfect {
+            position: absolute;
+            left: 45%;
+            width: 10%;
+            height: 100%;
+            background: #f1c40f;
+            box-shadow: 0 0 10px #f1c40f;
+            z-index: 1;
+        }
+
+        #qte-pointer {
+            position: absolute;
+            left: 0%;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 0 0 8px #fff;
+            z-index: 10;
+        }
+
+        #qte-stop-btn {
+            display: block;
+            margin: 15px auto 0;
+            padding: 6px 20px;
+            background: #8b3a3a;
+            color: #f4d03f;
+            border: 1px solid #f4d03f;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #qte-stop-btn:hover {
+            background: #a54646;
+        }
+
+        .right-panel {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-panel {
+            background: #fffaf0;
+            border-left: 5px solid #8b3a3a;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        #collection-area {
             background: #fffdf8;
             border: 2px solid #d5c8b5;
-            border-radius: 12px;
+            border-radius: 8px;
+            padding: 15px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+            min-height: 100px;
+            align-content: flex-start;
         }
 
         .collection-item {
@@ -159,29 +304,24 @@
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
             user-select: none;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .collection-item.waste {
+            background: #e2e3e5;
+            border-color: #6c757d;
+            color: #383d41;
         }
 
         .collection-item:hover {
-            background: #c3e6cb;
             transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .info-panel {
-            margin-top: 20px;
-            padding: 25px;
-            width: 100%;
-            max-width: 600px;
-            background: #fffaf0;
-            border-left: 5px solid #8b3a3a;
-            border-radius: 4px 12px 12px 4px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            display: none;
-        }
-
-        /* 动画关键帧 */
         @keyframes float {
 
             0%,
@@ -199,40 +339,20 @@
                 transform: translate(1px, 1px) rotate(0deg);
             }
 
-            10% {
-                transform: translate(-1px, -2px) rotate(-1deg);
-            }
-
             20% {
                 transform: translate(-3px, 0px) rotate(1deg);
-            }
-
-            30% {
-                transform: translate(3px, 2px) rotate(0deg);
             }
 
             40% {
                 transform: translate(1px, -1px) rotate(1deg);
             }
 
-            50% {
-                transform: translate(-1px, 2px) rotate(-1deg);
-            }
-
             60% {
                 transform: translate(-3px, 1px) rotate(0deg);
             }
 
-            70% {
-                transform: translate(3px, 1px) rotate(-1deg);
-            }
-
             80% {
                 transform: translate(-1px, -1px) rotate(1deg);
-            }
-
-            90% {
-                transform: translate(1px, 2px) rotate(0deg);
             }
 
             100% {
@@ -245,195 +365,406 @@
 <body>
 
     <h1>天工造物志</h1>
-    <div class="subtitle">点击周围元素或造物库物品投入炉中，重现中华古代硬核科技</div>
+    <div class="subtitle">合成基础元素与造物，还原中国古代八大科学名著之光</div>
 
-    <!-- 核心舞台 -->
-    <div id="game-stage" class="comic-stage">
-        <!-- 炼丹炉 -->
-        <div id="cauldron-container">
-            <img src="./assets/cauldron.png" alt="炼丹炉" id="cauldron-img" />
-        </div>
-
-        <div id="cauldron-status">等待投入材料...</div>
-
-        <!-- 五行图标 -->
-        <div class="element-icon" style="--angle: 0deg;" data-name="金 🪙">
-            <img src="./assets/icon-metal.png" alt="金">
-        </div>
-        <div class="element-icon" style="--angle: 72deg;" data-name="木 🪵">
-            <img src="./assets/icon-wood.png" alt="木">
-        </div>
-        <div class="element-icon" style="--angle: 144deg;" data-name="水 💧">
-            <img src="./assets/icon-water.png" alt="水">
-        </div>
-        <div class="element-icon" style="--angle: 216deg;" data-name="火 🔥">
-            <img src="./assets/icon-fire.png" alt="火">
-        </div>
-        <div class="element-icon" style="--angle: 288deg;" data-name="土 🪨">
-            <img src="./assets/icon-earth.png" alt="土">
-        </div>
+    <div class="resource-bar">
+        <span>💡 天工灵感：<span id="inspiration-count" style="font-size: 1.2em;">0</span></span>
+        <span style="font-size: 0.9em; color: #aaa;">(产出：+<span id="inspiration-rate">0</span>/秒)</span>
+        <span style="margin-left: 10px; font-size: 0.8em; color: #888;">*普通造物+1，完美火候造物+2</span>
     </div>
 
-    <!-- 炼化成功的信息展示 -->
-    <div class="info-panel" id="info-panel">
-        <h3 style="margin-top: 0;">📜 天工万物志</h3>
-        <p id="culture-text"></p>
+    <div class="epoch-banner" id="epoch-banner">
+        <div class="epoch-title" id="epoch-title">第一纪元：【汉魏启蒙】</div>
+        <div class="epoch-books" id="epoch-books">研读古籍：《九章算术》《齐民要术》《水经注》</div>
+        <div class="progress-text" id="epoch-progress">收集进度：0 / 3 (即将解锁下一纪元)</div>
     </div>
 
-    <!-- 玩家获得的万物库 -->
-    <div id="collection-area">
-        <div style="width: 100%; color: #666; font-size: 14px; margin-bottom: 5px;">我的造物库 (点击物品可继续研发)：</div>
+    <div class="game-layout">
+            <div class="quest-panel">
+                <h3>📜 典籍悬赏残卷</h3>
+                <div style="font-size: 0.8em; color:#666; margin-bottom:10px;">提示：将新合成的物品再次投入炉中，可触发科技大爆炸！</div>
+            
+                <!-- 第一纪元引导 -->
+                <div class="quest-item">
+                    <strong>《齐民要术》残卷：</strong><br>
+                    “水土交融，万物生发。木石相击，利器方成。”<br>
+                    <span style="color:#8b3a3a">目标：【农具】与【水利】</span><br>
+                    <span style="font-size: 0.85em; color: gray;">(提示：先合出泥巴、草木、铜铁...)</span>
+                </div>
+            
+                <!-- 第二纪元引导 -->
+                <div class="quest-item">
+                    <strong>《梦溪笔谈》残卷：</strong><br>
+                    “方家以磁石磨针锋，则能指南...”<br>
+                    <span style="color:#8b3a3a">目标：【指南针】</span><br>
+                    <span style="font-size: 0.85em; color: gray;">(提示：土与金生磁，再以木承载)</span><br>
+                    <span style="font-size: 0.75em; color: #d9534f;">*建议达到第二纪元</span>
+                </div>
+            
+                <!-- 第三纪元引导 -->
+                <div class="quest-item">
+                    <strong>《天工开物》残卷：</strong><br>
+                    “风声雨声，典籍不灭；巨舰火炮，威震四海。”<br>
+                    <span style="color:#8b3a3a">传说目标：【书院】或【远洋宝船】</span><br>
+                    <span style="font-size: 0.85em; color: gray;">(提示：需结合建筑、造纸、罗盘等T3造物)</span><br>
+                    <span style="font-size: 0.75em; color: #d9534f;">*大明集大成之作</span>
+                </div>
+            </div>
+
+        <div id="game-stage" class="comic-stage">
+            <div id="cauldron-container">
+                <img src="./assets/cauldron.png" alt="炼丹炉" id="cauldron-img"
+                    onerror="this.outerHTML='<div style=\'font-size:80px; text-align:center;\'>🏺</div>'" />
+            </div>
+            <div id="cauldron-status">炉温已就绪...</div>
+
+            <!-- --- 新增：QTE UI 容器 --- -->
+            <div id="qte-container">
+                <div id="qte-text">🔥 炉火游走，看准时机！</div>
+                <div id="qte-bar">
+                    <div id="qte-zone-safe"></div>
+                    <div id="qte-zone-perfect"></div>
+                    <div id="qte-pointer"></div>
+                </div>
+                <button id="qte-stop-btn">停 (Space)</button>
+            </div>
+
+            <div class="element-icon" style="--angle: 0deg;" data-name="金 🪙">金</div>
+            <div class="element-icon" style="--angle: 72deg;" data-name="木 🪵">木</div>
+            <div class="element-icon" style="--angle: 144deg;" data-name="水 💧">水</div>
+            <div class="element-icon" style="--angle: 216deg;" data-name="火 🔥">火</div>
+            <div class="element-icon" style="--angle: 288deg;" data-name="土 🪨">土</div>
+        </div>
+
+        <div class="right-panel">
+            <div id="collection-area">
+                <div style="width: 100%; color: #8b3a3a; font-size: 14px; margin-bottom: 5px; font-weight:bold;">🎒
+                    我的造物库 (点击放入炉中)：</div>
+            </div>
+
+            <div class="info-panel" id="info-panel">
+                <h3 style="margin-top: 0; color:#8b3a3a; border-bottom:1px solid #ddd; padding-bottom:5px;">新造物出炉！</h3>
+                <p id="culture-text"></p>
+            </div>
+        </div>
     </div>
 
     <script>
-        // === 游戏配置 ===
+        // --- 核心配置 ---
         const unlockedItems = new Set();
-        const API_KEY = "sk-tvefwzmlfsbzrqkyudqwglgwcpolupltomaexbvhqjydkaxe";
-        const API_URL = "https://api.siliconflow.cn/v1/chat/completions";
-        const MODEL_NAME = "Qwen/Qwen3-8B";
+        let currentRecipe = [];
+        let isCrafting = false;
 
-        // 🌟 核心修改 1：更改初始默认配方，契合“古代硬核科技”主题
-        const localRecipes = {
-            "木 🪵,水 💧": {
-                name: "筒车 🎡",
-                poem: "连筒流水唯将绿，拔刺飞凫不受呼。 —— [唐] 杜甫",
-                classic_quote: "《农政全书》载：水轮转水，筒下承水，激轮旋转，随流自覆，日夜不息。",
-                detail: "筒车是中国古代一项极为重要的农业灌溉工具。它利用水流的冲击力转动轮盘，轮盘上的竹筒在低处舀水，转至高处时自动倾泻入水槽，从而实现无动力的自动提水灌溉，极大地促进了古代农业的发展。",
-                wiki: "筒车，又称流水筒车，是一种以水流作动力，取水灌田的农具。"
+        // --- 资源挂机系统 ---
+        let inspiration = 0;
+        let inspirationRate = 0;
+        setInterval(() => {
+            if (inspirationRate > 0) {
+                inspiration += inspirationRate;
+                document.getElementById('inspiration-count').innerText = inspiration;
             }
-        };
+        }, 1000);
 
-        // 获取 DOM
+        // --- 纪元系统 ---
+                let currentEpoch = 1;
+                const epochs = {
+                    // 第一阶段：收集基础元素与早期农业/手工业（15个造物升级）
+                    1: {
+                        title: "第一纪元：【汉魏启蒙】",
+                        books: "研读古籍：《考工记》《齐民要术》《水经注》",
+                        nextTarget: 15
+                    },
+                    // 第二阶段：进入大航海前夕与四大发明爆发期（30个造物升级）
+                    2: {
+                        title: "第二纪元：【大宋格物】",
+                        books: "新增古籍：《梦溪笔谈》《营造法式》《武经总要》",
+                        nextTarget: 30
+                    },
+                    // 第三阶段：终极手工业与集大成时代
+                    3: {
+                        title: "第三纪元：【大明集大成】",
+                        books: "新增古籍：《本草纲目》《农政全书》《天工开物》",
+                        nextTarget: 999
+                    }
+                };
+
+        // --- 纯本地配方库 ---
+               // --- 纯本地配方库 (终极扩充版 - 50+ 节点网状科技树) ---
+                // 注意：键名严格按 JS 的 Unicode 排序规则组合，以保证前端 sort() 能准确匹配。
+                // 基础元素排序法则：土 < 木 < 水 < 火 < 金
+                const localRecipes = {
+                    // ==========================================
+                    // Tier 1：自然法则与基础提炼 (元素 + 元素)
+                    // ==========================================
+                    "土 🪨,水 💧": { name: "泥巴 🟤", poem: "紫燕衔泥筑新巢", classic_quote: "《考工记》：抟埴之工...", detail: "水土交融的黏性物质，陶器与建筑之基。", wiki: "湿润的土壤。" },
+                    "土 🪨,火 🔥": { name: "陶瓷 🏺", poem: "九秋风露越窑开", classic_quote: "《天工开物》：水火既济而土合...", detail: "泥土经高温烧制，改变了分子结构。", wiki: "硅酸盐材料。" },
+                    "水 💧,木 🪵": { name: "草木 🌱", poem: "春风吹又生", classic_quote: "《齐民要术》：顺天时，量地利...", detail: "水滋润木，孕育万物生机。", wiki: "植物的总称。" },
+                    "火 🔥,木 🪵": { name: "木炭 ⬛", poem: "伐薪烧炭南山中", classic_quote: "《天工开物》：凡木炭，皆截木烧成...", detail: "隔绝空气燃烧脱水，是古代冶炼的高级燃料。", wiki: "常用的燃料和还原剂。" },
+                    "火 🔥,金 🪙": { name: "铜铁 🗡️", poem: "百炼化作绕指柔", classic_quote: "《天工开物》：凡治铁成器...", detail: "烈火熔炼金属矿石，获得可塑形的粗铁。", wiki: "古代基础冶炼产物。" },
+                    "土 🪨,木 🪵": { name: "耕地 🟫", poem: "带月荷锄归", classic_quote: "《农政全书》：农事必本于地。", detail: "经过开垦的土地，农业的根本。", wiki: "用于农业生产的土地。" },
+                    "土 🪨,金 🪙": { name: "磁石 🧲", poem: "慈石召铁，或引之也", classic_quote: "《梦溪笔谈》：方家以磁石磨针锋...", detail: "蕴含天然磁性的矿石。", wiki: "四氧化三铁天然矿物。" },
+                    "水 💧,火 🔥": { name: "蒸汽 ☁️", poem: "炉火照天地，红星乱紫烟", classic_quote: "《物理小识》：气之用，嘘吸生风...", detail: "水遇高温沸腾化为气体。", wiki: "水的气态形式。" },
+                    "水 💧,金 🪙": { name: "水银 🧪", poem: "积变又还成丹砂", classic_quote: "《抱朴子》：丹砂烧之成水银...", detail: "常温下呈液态的金属，道家炼丹圣物。", wiki: "化学元素汞(Hg)。" },
+                    "木 🪵,金 🪙": { name: "矿镐 ⛏️", poem: "斧斤以时入山林", classic_quote: "《天工开物》：开山取矿...", detail: "木柄与金属头的结合，用于开采更多资源。", wiki: "采矿工具。" },
+
+                    // ==========================================
+                    // Tier 2：手工业与初级科技 (T1 + 基础/T1)
+                    // ==========================================
+                    "木 🪵,铜铁 🗡️": { name: "农具 🪓", poem: "村庄儿女各当家", classic_quote: "《农政全书》：器用不备，虽有良田亦废。", detail: "金属刃与木柄结合，农业革命的开端。", wiki: "农业生产工具。" },
+                    "火 🔥,草木 🌱": { name: "中药 💊", poem: "药圃无凡草", classic_quote: "《本草纲目》：凡药有寒热温凉四气...", detail: "煎熬草木，提炼植物精华用于治病。", wiki: "中国传统医学药物。" },
+                    "水 💧,草木 🌱": { name: "纸浆 📄", poem: "片楮传来倍有情", classic_quote: "《天工开物·杀青》：凡造竹纸...", detail: "植物纤维浸泡捶打形成的浆状物。", wiki: "造纸的基本原料。" },
+                    "土 🪨,草木 🌱": { name: "麻纤维 🧶", poem: "东门之池，可以沤麻", classic_quote: "《齐民要术》：种麻篇...", detail: "从植物中提取的坚韧纤维，可用于纺织。", wiki: "麻类植物的韧皮纤维。" },
+                    "火 🔥,泥巴 🟤": { name: "砖瓦 🧱", poem: "昭阳殿下捣衣声", classic_quote: "《营造法式》：凡陶砖瓦...", detail: "泥巴压制成型后入窑烧制，宏伟建筑基石。", wiki: "传统的建筑材料。" },
+                    "土 🪨,木炭 ⬛": { name: "黑火药 🧨", poem: "爆竹声中一岁除", classic_quote: "《天工开物》：火药以硝石硫磺为主...", detail: "木炭、硫磺与硝石的致命混合物。", wiki: "中国古代四大发明之一。" },
+                    "木炭 ⬛,铜铁 🗡️": { name: "百炼钢 ⚔️", poem: "干将莫邪，百炼生光", classic_quote: "《天工开物》：凡铁分生熟...", detail: "高温下木炭与生铁反复锻打，脱碳成钢。", wiki: "古代高级冶金技术。" },
+                    "火 🔥,水银 🧪": { name: "朱砂丹 🔴", poem: "鼎内龙虎腾", classic_quote: "《周易参同契》：胡粉投火中...", detail: "水银经高温炼制，古代化学的启蒙。", wiki: "硫化汞结晶。" },
+                    "水 💧,木炭 ⬛": { name: "墨汁 🖋️", poem: "挥毫泼墨", classic_quote: "《齐民要术》：合墨法...", detail: "松烟木炭与水胶混合的书写颜料。", wiki: "传统文房四宝之一。" },
+                    "水 💧,泥巴 🟤": { name: "水利沟渠 🛤️", poem: "一道飞泉穿石窟", classic_quote: "《水经注》：川渠纵横...", detail: "引导水流的泥土工程，农业命脉。", wiki: "古代水利工程。" },
+                    "木 🪵,水 💧": { name: "浮木 筏 🛶", poem: "纵一苇之所如", classic_quote: "《天工开物》：舟车之始...", detail: "利用木材的浮力在水上移动。", wiki: "早期的水上交通工具。" },
+
+                    // ==========================================
+                    // Tier 3：造物奇观与文明演进
+                    // ==========================================
+                    "木 🪵,陶瓷 🏺": { name: "活字印刷术 🖨️", poem: "新翻活字更神奇", classic_quote: "《梦溪笔谈》：用胶泥刻字...", detail: "胶泥刻字排版烧制，文明传播的加速器。", wiki: "中国古代四大发明之一。" },
+                    "木 🪵,纸浆 📄": { name: "造纸术 📜", poem: "蔡侯纸出文明跃", classic_quote: "《后汉书》：用树肤麻头以为纸。", detail: "用木框捞起纸浆晾干，代替了沉重的竹简。", wiki: "中国古代四大发明之一。" },
+                    "农具 🪓,耕地 🟫": { name: "农作物 🌾", poem: "秋收万颗子", classic_quote: "《齐民要术》：食者，民之本也。", detail: "人类驯化的植物，提供稳定的能量。", wiki: "赖以生存的农副产品。" },
+                    "木 🪵,砖瓦 🧱": { name: "土木建筑 ⛩️", poem: "多少楼台烟雨中", classic_quote: "《营造法式》：凡构屋之制...", detail: "砖瓦与木材榫卯相接的古典建筑。", wiki: "中国古典建筑体系。" },
+                    "木 🪵,磁石 🧲": { name: "指南针 🧭", poem: "磁针定南北", classic_quote: "《梦溪笔谈》：水浮多荡摇...", detail: "指示地球磁极的仪器，开启大航海时代。", wiki: "中国古代四大发明之一。" },
+                    "木 🪵,麻纤维 🧶": { name: "纺纱机 🧵", poem: "札札弄机杼", classic_quote: "《天工开物》：凡棉布寸土皆有...", detail: "将纤维连续捻成线的机械。", wiki: "古代纺织机械。" },
+                    "墨汁 🖋️,造纸术 📜": { name: "古籍书卷 📚", poem: "腹有诗书气自华", classic_quote: "《四库全书》：经史子集...", detail: "文字的物理载体，人类记忆的延续。", wiki: "文化传承的媒介。" },
+                    "蒸汽 ☁️,铜铁 🗡️": { name: "浑天仪 🔭", poem: "璇玑玉衡，以齐七政", classic_quote: "《张衡传》：以精铜铸成...", detail: "精密的金属齿轮机械，用于观测天象。", wiki: "古代天文观测仪器。" },
+                    "农作物 🌾,水利沟渠 🛤️": { name: "水稻梯田 🏞️", poem: "水满田畴稻叶齐", classic_quote: "《农政全书》：水利者，农之本也。", detail: "利用地形和水利打造的高效农业系统。", wiki: "古代集约型农业代表。" },
+                    "水 💧,农作物 🌾": { name: "酿酒 🍶", poem: "把酒问青天", classic_quote: "《齐民要术》：造神曲并酒...", detail: "粮食在水分参与下发酵产生的乙醇饮料。", wiki: "发酵工程的早期应用。" },
+                    "中药 💊,火 🔥": { name: "九转金丹 🟡", poem: "仙人抚我顶，结发受长生", classic_quote: "《抱朴子》：九转之丹，服之三日得仙。", detail: "提纯到极点的药石精华（虽然可能有毒）。", wiki: "道家炼丹术的终极追求。" },
+                    "木 🪵,黑火药 🧨": { name: "突火枪/火箭 🚀", poem: "火龙出水势震天", classic_quote: "《武经总要》：火药之法...", detail: "将火药装入竹木管中，最早的管形射击火器。", wiki: "现代枪炮的鼻祖。" },
+
+                    // ==========================================
+                    // Tier 4：大国重器与盛世巅峰 (复合高级造物)
+                    // ==========================================
+                    "纺纱机 🧵,草木 🌱": { name: "丝绸锦缎 👘", poem: "遍身罗绮者，不是养蚕人", classic_quote: "《天工开物》：乃服篇...", detail: "极其细腻的纺织工艺，古代最昂贵的贸易品。", wiki: "中国特有的古代奢侈品。" },
+                    "土木建筑 ⛩️,古籍书卷 📚": { name: "太学/书院 🏛️", poem: "风声雨声读书声", classic_quote: "《礼记》：建国君民，教学为先。", detail: "汇聚典籍与学者的知识殿堂。", wiki: "古代高等教育机构。" },
+                    "浮木 筏 🛶,指南针 🧭": { name: "远洋宝船 ⛵", poem: "长风破浪会有时", classic_quote: "《明史》：造大舶，修四十四丈...", detail: "配备罗盘的巨大木制帆船，郑和下西洋之倚仗。", wiki: "古代造船技术的巅峰。" },
+                    "百炼钢 ⚔️,黑火药 🧨": { name: "红夷大炮 炮", poem: "大将南征胆气豪", classic_quote: "《天工开物》：铸火炮...", detail: "精钢铸造的重型火器，威力足以摧城拔寨。", wiki: "明清时期的重型武器。" },
+                    "中药 💊,酿酒 🍶": { name: "药酒/麻沸散 🍷", poem: "华佗神技叹绝伦", classic_quote: "《后汉书·华佗传》：乃令先以酒服麻沸散...", detail: "酒精溶解了药效，最早的全身麻醉剂。", wiki: "古代外科手术的保障。" },
+                    "纸浆 📄,黑火药 🧨": { name: "烟花爆竹 🎆", poem: "东风夜放花千树", classic_quote: "《天工开物》：爆竹之法...", detail: "火药的浪漫应用，装入纸筒在夜空绽放。", wiki: "节日庆典的娱乐产物。" }
+                };
+
+        // DOM 元素
         const elementIcons = document.querySelectorAll('.element-icon');
-        const cauldronImg = document.getElementById('cauldron-img');
+        const cauldronImg = document.getElementById('cauldron-img') || document.querySelector('#cauldron-container div');
         const statusText = document.getElementById('cauldron-status');
         const infoPanel = document.getElementById('info-panel');
         const cultureText = document.getElementById('culture-text');
         const collectionArea = document.getElementById('collection-area');
 
-        let currentRecipe = [];
-        let isCrafting = false;
+        // --- 新增：QTE 相关变量 ---
+        let qteAnimationId;
+        let pointerPos = 0;
+        let pointerDir = 1;
+        const pointerSpeed = 2.0; // 指针移动速度
+        let isQteActive = false;
 
+        // 交互逻辑
         function addIngredient(elementName) {
             if (isCrafting || currentRecipe.length >= 2) return;
-
             currentRecipe.push(elementName);
 
             statusText.innerText = `已投入: ${currentRecipe.join(' + ')}`;
-            cauldronImg.classList.add('absorbing');
-            setTimeout(() => cauldronImg.classList.remove('absorbing'), 300);
+            if (cauldronImg.classList) cauldronImg.classList.add('absorbing');
+            setTimeout(() => { if (cauldronImg.classList) cauldronImg.classList.remove('absorbing'); }, 300);
 
             if (currentRecipe.length === 2) {
                 isCrafting = true;
-                setTimeout(startAIAlchemy, 800);
+                // --- 修改：满2个元素后，延迟唤起 QTE 而不是直接合成 ---
+                setTimeout(startQTE, 400);
             }
         }
 
         elementIcons.forEach(icon => {
-            icon.addEventListener('click', function () {
-                const elementName = this.getAttribute('data-name');
-                addIngredient(elementName);
-            });
+            icon.addEventListener('click', function () { addIngredient(this.getAttribute('data-name')); });
         });
 
         collectionArea.addEventListener('click', function (e) {
-            if (e.target.classList.contains('collection-item')) {
-                const itemName = e.target.innerText;
-                addIngredient(itemName);
+            const itemDiv = e.target.closest('.collection-item');
+            if (itemDiv) {
+                addIngredient(itemDiv.getAttribute('data-name'));
             }
         });
 
-        // 触发AI炼丹
-        async function startAIAlchemy() {
-            statusText.innerText = "⚙️ 考究典籍推演中...";
+        // --- 新增：QTE 核心功能 ---
+        function startQTE() {
+            isQteActive = true;
+            document.getElementById('qte-container').style.display = 'block';
+            const qteText = document.getElementById('qte-text');
+            qteText.innerText = "🔥 炉火游走，看准时机！";
+            qteText.style.color = "#f4d03f";
+            pointerPos = 0;
+
+            function animateQTE() {
+                if (!isQteActive) return;
+                pointerPos += pointerDir * pointerSpeed;
+                if (pointerPos >= 100) { pointerPos = 100; pointerDir = -1; }
+                if (pointerPos <= 0) { pointerPos = 0; pointerDir = 1; }
+
+                document.getElementById('qte-pointer').style.left = pointerPos + '%';
+                qteAnimationId = requestAnimationFrame(animateQTE);
+            }
+            animateQTE();
+        }
+
+        function stopQTE() {
+            if (!isQteActive) return;
+            isQteActive = false;
+            cancelAnimationFrame(qteAnimationId);
+
+            let modifier = "fail";
+            const qteText = document.getElementById('qte-text');
+
+            if (pointerPos >= 45 && pointerPos <= 55) {
+                modifier = "perfect";
+                qteText.innerText = "✨ 完美火候！造物升华！";
+                qteText.style.color = "#f1c40f";
+            } else if (pointerPos >= 20 && pointerPos <= 80) {
+                modifier = "success";
+                qteText.innerText = "✅ 火候平稳。";
+                qteText.style.color = "#27ae60";
+            } else {
+                qteText.innerText = "💥 火候失控！材料尽毁！";
+                qteText.style.color = "#c0392b";
+            }
+
+            // 停顿 0.8 秒展示结果，然后进入炼丹结算
+            setTimeout(() => {
+                document.getElementById('qte-container').style.display = 'none';
+                startLocalAlchemy(modifier);
+            }, 800);
+        }
+
+        // QTE 绑定按钮和空格键
+        document.getElementById('qte-stop-btn').addEventListener('click', stopQTE);
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && isQteActive) {
+                e.preventDefault(); // 防止按空格导致页面滚动
+                stopQTE();
+            }
+        });
+
+        // --- 修改：接收 QTE 判定结果的炼丹逻辑 ---
+        function startLocalAlchemy(modifier) {
+            statusText.innerText = "⚙️ 融合中...";
             statusText.style.color = "#d9534f";
-            cauldronImg.classList.add('shaking');
+            if (cauldronImg.classList) cauldronImg.classList.add('shaking');
 
-            let formulaKey = currentRecipe.sort().join(',');
-            let resultData = localRecipes[formulaKey];
-
-            try {
-                if (!resultData) {
-                    // 🌟 核心修改 2：重写 Prompt，强制关联古代八大科学名著，并要求输出 detail 详细介绍
-                    const systemPrompt = `你是一个中国古代科技与造物游戏的核心引擎。玩家正在尝试融合【${currentRecipe[0]}】和【${currentRecipe[1]}】。
-请推演出一项【中国古代真实的造物、发明或农业/工业技术】。
-
-【重要约束】：
-1. 生成的物品或技术必须能从“中国古代科学八大名著”（如《天工开物》《梦溪笔谈》《齐民要术》《本草纲目》《农政全书》《九章算术》《营造法式》《水经注》等）中找到渊源。
-2. 禁止直接拼接！必须发生符合历史或物理的质变！只包含1个Emoji。禁止输出思考过程。
-3. 输出格式为纯JSON，不带markdown，字段如下：
-   - name: 物品/技术名称（带1个Emoji）
-   - poem: 历史上真实的古诗词（格式："诗句 —— [朝代] 作者"）。如果该发明极为生僻找不到相关真实诗词，必须留空 ""，绝对不能造假编造。
-   - classic_quote: 引用八大名著中的原文或仿古文言文来说明其出处与原理，必须标明书名（如“《天工开物》载：...”）。
-   - detail: 用现代白话文详细介绍这件物品或技术的历史背景、工作原理及伟大意义（100字左右）。
-   - wiki: 简短的现代百科定义。`;
-
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${API_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: MODEL_NAME,
-                            messages: [{ role: "user", content: systemPrompt }],
-                            temperature: 0.3 // 保持低随机性，确保历史严谨性
-                        })
-                    });
-
-                    const data = await response.json();
-                    let aiText = data.choices[0].message.content.trim();
-                    const jsonMatch = aiText.match(/\{[\s\S]*\}/);
-                    resultData = JSON.parse(jsonMatch ? jsonMatch[0] : aiText);
-
-                    localRecipes[formulaKey] = resultData;
+            setTimeout(() => {
+                // 如果 QTE 失败，无视配方直接变废料
+                if (modifier === "fail") {
+                    createSuccessUI({
+                        name: "焦渣碎屑 🪨",
+                        poem: "",
+                        classic_quote: "《天工开物》载：火候失控，物毁炉炸。",
+                        detail: "由于火候未掌握好，原本的材料彻底化为了乌有。",
+                        wiki: "实验失败的产物。"
+                    }, modifier);
+                    resetFurnace();
+                    return;
                 }
 
-                createSuccessUI(resultData);
+                let formulaKey = currentRecipe.sort().join(',');
+                let resultData = localRecipes[formulaKey];
 
-            } catch (error) {
-                console.error("研发失败:", error);
-                alert("💨 典籍查阅失败，请检查网络或控制台。");
-            } finally {
+                if (resultData) {
+                    // 深拷贝对象，防止修改原字典数据
+                    let finalData = { ...resultData };
+                    if (modifier === "perfect") {
+                        // 完美火候增加 UI 特效文本
+                        finalData.name = finalData.name.replace(" ", " ✨ ");
+                        finalData.poem = "【完美火候造物】" + (finalData.poem || "");
+                    }
+                    createSuccessUI(finalData, modifier);
+                } else {
+                    createSuccessUI({
+                        name: "焦渣碎屑 🪨",
+                        poem: "",
+                        classic_quote: "《天工开物》载：凡物相克，水火不容，强融必溃。",
+                        detail: "两种属性冲突或缺乏关联的物质强行融合，化为了无用的废弃物。",
+                        wiki: "实验失败的产物。"
+                    }, modifier);
+                }
                 resetFurnace();
-            }
+            }, 500);
         }
 
-        // 渲染成功UI
-        function createSuccessUI(data) {
+        // --- 修改：渲染结果并根据完美火候计算双倍资源 ---
+        function createSuccessUI(data, modifier) {
             infoPanel.style.display = 'block';
+            let poemHTML = data.poem && data.poem.trim() !== "" ? `<i style="color: #555;">「${data.poem}」</i><br><br>` : "";
 
-            let poemHTML = "";
-            if (data.poem && data.poem.trim() !== "") {
-                poemHTML = `<i style="color: #555;">「${data.poem}」</i><br><br>`;
-            }
-
-            // 🌟 核心修改 3：去掉五行释义，加入 detail 详细介绍的排版
             cultureText.innerHTML = `
-                <strong style="font-size: 1.2em; color: #d9534f;">【${data.name}】</strong><br><br>
+                <strong style="font-size: 1.3em; color: ${modifier === 'perfect' ? '#f1c40f' : '#d9534f'};">【${data.name}】</strong><br><br>
                 ${poemHTML}
-                <span style="color: #8b3a3a; font-weight: bold;">📖 典籍考究：</span>
+                <span style="color: #8b3a3a; font-weight: bold;">📖 典籍出处：</span>
                 <span style="color: #5c4033; font-style: italic;">${data.classic_quote}</span><br><br>
-                <span style="color: #333;"><strong>⚙️ 详细介绍：</strong>${data.detail}</span><br><br>
-                <span style="color: #2c3e50; font-size: 0.9em; display: inline-block;">
-                    <strong>📚 百科：</strong>${data.wiki}
-                </span>
+                <span style="color: #333;"><strong>⚙️ 技术解读：</strong>${data.detail}</span><br><br>
+                <span style="color: #2c3e50; font-size: 0.85em;"><strong>📚 百科：</strong>${data.wiki}</span>
             `;
 
-            if (!unlockedItems.has(data.name)) {
-                unlockedItems.add(data.name);
-                collectionArea.insertAdjacentHTML('beforeend', `<div class="collection-item">${data.name}</div>`);
+            // 去除用来做特效的星星符号以判断是否已解锁
+            let baseName = data.name.replace(" ✨ ", " ");
+
+            if (!unlockedItems.has(baseName)) {
+                unlockedItems.add(baseName);
+
+                const isWaste = /渣|碎|泥|朽|废|灰|汽/.test(baseName);
+                const extraClass = isWaste ? "waste" : "";
+                const recipeText = currentRecipe.join(' + ');
+
+                // 完美火候边框带金色高亮
+                const perfectStyle = modifier === 'perfect' ? 'border-color: #f1c40f; box-shadow: 0 0 8px #f1c40f;' : '';
+
+                const itemHTML = `
+                    <div class="collection-item ${extraClass}" data-name="${baseName}" style="${perfectStyle}">
+                        <span style="font-size: 1.1em;">${data.name}</span>
+                        <span style="font-size: 0.7em; font-weight: normal; margin-top: 3px; opacity: 0.7;">${recipeText}</span>
+                    </div>
+                `;
+                collectionArea.insertAdjacentHTML('beforeend', itemHTML);
+
+                if (!isWaste) {
+                    // --- 核心改动：完美火候获得 +2 灵感产出 ---
+                    let gain = (modifier === "perfect") ? 2 : 1;
+                    inspirationRate += gain;
+                    document.getElementById('inspiration-rate').innerText = inspirationRate;
+                }
+
+                checkEpochProgress();
             }
         }
 
-        // 重置炉子
+        function checkEpochProgress() {
+            let validCount = Array.from(document.querySelectorAll('.collection-item:not(.waste)')).length;
+            let target = epochs[currentEpoch].nextTarget;
+
+            if (validCount >= target && currentEpoch < 3) {
+                currentEpoch++;
+                alert(`🎉 恭喜！文明演进！\n您已解锁 ${epochs[currentEpoch].title}\n可以查阅更高级的典籍了！`);
+                target = epochs[currentEpoch].nextTarget;
+            }
+
+            document.getElementById('epoch-title').innerText = epochs[currentEpoch].title;
+            document.getElementById('epoch-books').innerText = epochs[currentEpoch].books;
+            document.getElementById('epoch-progress').innerText = currentEpoch === 3 ? `已集大成，当前有效造物：${validCount}` : `收集进度：${validCount} / ${target} (即将解锁下一纪元)`;
+        }
+
         function resetFurnace() {
             currentRecipe = [];
             isCrafting = false;
-            cauldronImg.classList.remove('shaking');
+            if (cauldronImg.classList) cauldronImg.classList.remove('shaking');
             statusText.innerText = "等待投入材料...";
             statusText.style.color = "#333";
         }
+
+        // 初始化
+        checkEpochProgress();
     </script>
 </body>
 
