@@ -631,14 +631,31 @@
                         }
 
                         // 新增：渲染商店列表
-                        function renderStore() {
-                            let html = '';
+                        // 藏经阁：当前货架商品
+                        let storeSlotItems = [];
+
+                        // 初始化货架：从未购买的残卷中随机抽取最多3个
+                        function initStoreSlots() {
                             const unpurchased = questList.filter(q => !q.purchased);
-                            if (unpurchased.length === 0) {
-                                html = `<div style="text-align:center; color:#888; font-size:0.9em; padding: 10px;">残卷已全部收集完毕！</div>`;
-                            } else {
-                                unpurchased.forEach(q => {
-                                    html += `
+                            // 打乱顺序后取前3个
+                            const shuffled = unpurchased.sort(() => Math.random() - 0.5);
+                            storeSlotItems = shuffled.slice(0, 3);
+                            renderStore();
+                        }
+
+                        function renderStore() {
+                            const unpurchased = questList.filter(q => !q.purchased);
+                            if (unpurchased.length === 0 && storeSlotItems.length === 0) {
+                                document.getElementById('store-list').innerHTML = `<div style="text-align:center; color:#8a7a50; font-size:0.9em; padding: 10px;">残卷已全部收集完毕！</div>`;
+                                return;
+                            }
+                            if (storeSlotItems.length === 0) {
+                                document.getElementById('store-list').innerHTML = `<div style="text-align:center; color:#8a7a50; font-size:0.9em; padding: 10px;">货架已空，稍后补货...</div>`;
+                                return;
+                            }
+                            let html = '';
+                            storeSlotItems.forEach(q => {
+                                html += `
                     <div class="store-item">
                         <strong style="color:#f4d03f;">📜 ${q.name}</strong>
                         <span style="color:#b0a080; font-size:0.9em;">解锁配方提示...</span>
@@ -646,10 +663,9 @@
                             消耗 ${q.cost} 灵感
                         </button>
                     </div>`;
-                                });
-                            }
+                            });
                             document.getElementById('store-list').innerHTML = html;
-                            updateBuyButtons(); // 刷新按钮状态
+                            updateBuyButtons();
                         }
 
                         function updateBuyButtons() {
@@ -668,14 +684,26 @@
 
                            
 
-                            // 购买后
+                            // 购买后补货
                             function buyQuest(id) {
                                 const quest = questList.find(q => q.id === id);
                                 if (quest && inspiration >= quest.cost) {
                                     setInspiration(inspiration - quest.cost);
                                     quest.purchased = true;
+
+                                    // 从当前货架移除已购买的
+                                    storeSlotItems = storeSlotItems.filter(q => q.id !== id);
+
+                                    // 补货：从剩余未购买中随机补满3个
+                                    const stillUnpurchased = questList.filter(q => !q.purchased);
+                                    const needed = 3 - storeSlotItems.length;
+                                    if (needed > 0 && stillUnpurchased.length > 0) {
+                                        const shuffled = stillUnpurchased.sort(() => Math.random() - 0.5);
+                                        storeSlotItems.push(...shuffled.slice(0, needed));
+                                    }
+
                                     renderQuests();
-                                    renderStore(); // renderStore内也会自动updateBuyButtons
+                                    renderStore();
                                 }
                             }
         // --- 核心配置 ---
@@ -1266,7 +1294,7 @@
     // 5. 初始化渲染（页面加载时调用）
     window.addEventListener('load', () => {
         renderQuests();
-        renderStore();
+        initStoreSlots();
         renderCollectionItems(); // 新增
            // 绑定分类按钮点击事件
         document.querySelectorAll('.category-btn').forEach(btn => {
@@ -1572,7 +1600,7 @@
         // 初始化
         checkEpochProgress();
         renderQuests();
-        renderStore(); 
+        initStoreSlots(); 
     </script>
 </body>
 
