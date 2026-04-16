@@ -92,11 +92,11 @@
 
         .quest-panel {
             width: 250px;
-            background: rgba(255, 250, 240, 0.9);
-            border: 2px dashed #8b3a3a;
+            background: rgba(30, 20, 10, 0.92);
+            border: 2px solid #7e5109;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(244, 208, 63, 0.05);
         }
                 .left-panel {
             display: flex;
@@ -106,58 +106,60 @@
         }
 
         .store-panel {
-            background: rgba(240, 248, 255, 0.95);
-            border: 2px dashed #2980b9;
+            background: rgba(30, 20, 10, 0.92);
+            border: 2px solid #7e5109;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(244, 208, 63, 0.05);
         }
 
-        .store-panel h3 { margin-top: 0; color: #2980b9; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+        .store-panel h3 { margin-top: 0; color: #f4d03f; border-bottom: 1px solid #7e5109; padding-bottom: 5px; }
 
         .store-item {
             font-size: 0.85em;
-            background: #fff;
-            border: 1px solid #ccc;
+            background: rgba(255, 250, 240, 0.06);
+            border: 1px solid #7e5109;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            color: #f0e0c0;
         }
 
         .buy-btn {
-            background: #f1c40f;
-            border: 1px solid #d4ac0d;
+            background: linear-gradient(145deg, #7e5109, #a0680c);
+            border: 1px solid #f4d03f;
             border-radius: 4px;
             padding: 5px;
             cursor: pointer;
             font-weight: bold;
-            color: #8b3a3a;
+            color: #f4d03f;
             transition: all 0.2s;
         }
-        .buy-btn:hover { background: #f4d03f; transform: scale(1.05); }
-        .buy-btn:disabled { background: #ddd; color: #888; cursor: not-allowed; transform: none; border-color: #ccc; }
+        .buy-btn:hover { background: linear-gradient(145deg, #a0680c, #c07d0f); transform: scale(1.05); box-shadow: 0 0 8px rgba(244, 208, 63, 0.4); }
+        .buy-btn:disabled { background: #3a2a0a; color: #6a5a30; cursor: not-allowed; transform: none; border-color: #4a3a10; }
         .quest-panel h3 {
             margin-top: 0;
-            color: #8b3a3a;
-            border-bottom: 1px solid #d5c8b5;
+            color: #f4d03f;
+            border-bottom: 1px solid #7e5109;
             padding-bottom: 5px;
         }
 
         .quest-item {
-            font-size: 0.9em;
-            color: #555;
-            margin-bottom: 15px;
-            background: #fff;
+            font-size: 0.88em;
+            color: #d4c4a0;
+            margin-bottom: 12px;
+            background: rgba(255, 250, 240, 0.06);
             padding: 8px;
             border-radius: 5px;
             border-left: 3px solid #f4d03f;
+            line-height: 1.5;
         }
 
         .quest-item strong {
-            color: #333;
+            color: #f4d03f;
         }
 
         .comic-stage {
@@ -321,49 +323,107 @@
         }
 
         .info-panel {
-            background: #fffaf0;
-            border-left: 5px solid #8b3a3a;
-            border-radius: 4px;
+            background: rgba(30, 20, 10, 0.92);
+            border: 2px solid #7e5109;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(244, 208, 63, 0.05);
+            color: #f0e0c0;
             display: none;
         }
 
+        .info-panel h3 {
+            color: #f4d03f;
+            border-bottom: 1px solid #7e5109;
+        }
+
         #collection-area {
-            background: #fffdf8;
-            border: 2px solid #d5c8b5;
-            border-radius: 8px;
+            background: rgba(30, 20, 10, 0.92);
+            border: 2px solid #7e5109;
+            border-radius: 10px;
             padding: 15px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            flex-direction: column;
+            gap: 10px;
             min-height: 100px;
-            align-content: flex-start;
         }
 
         .collection-item {
-            padding: 5px 10px;
-            background: #d4edda;
-            border: 1px solid #28a745;
+            padding: 5px 12px;
+            background: rgba(244, 208, 63, 0.1);
+            border: 1px solid #7e5109;
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
             user-select: none;
             transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #f4d03f;
         }
 
         .collection-item.waste {
-            background: #e2e3e5;
-            border-color: #6c757d;
-            color: #383d41;
+            background: rgba(100, 90, 60, 0.2);
+            border-color: #4a3a10;
+            color: #8a7a50;
         }
 
         .collection-item:hover {
+            background: rgba(244, 208, 63, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(244, 208, 63, 0.2);
+        }
+
+        /* 分类筛选按钮 */
+        .category-btn {
+            background: rgba(255, 250, 240, 0.06);
+            border: 1px solid #7e5109;
+            border-radius: 4px;
+            color: #c0a060;
+            cursor: pointer;
+            padding: 3px 8px;
+            font-size: 0.78em;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .category-btn:hover {
+            background: rgba(244, 208, 63, 0.15);
+            color: #f4d03f;
+        }
+
+        .category-btn.active {
+            background: rgba(244, 208, 63, 0.2);
+            border-color: #f4d03f;
+            color: #f4d03f;
+        }
+
+        .category-stats {
+            font-size: 0.8em;
+            color: #8a7a50;
+        }
+
+        #collection-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .collection-group {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .collection-group-title {
+            font-size: 0.8em;
+            color: #c0a060;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(126, 81, 9, 0.5);
+            padding-bottom: 2px;
+        }
+
+        .collection-group-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
         @keyframes float {
@@ -428,14 +488,14 @@
         <div class="left-panel">
             <div class="quest-panel">
                 <h3>📜 典籍悬赏残卷</h3>
-                <div style="font-size: 0.8em; color:#666; margin-bottom:10px;">提示：将新合成的物品再次投入炉中，可触发科技大爆炸！</div>
+                <div style="font-size: 0.8em; color:#8a7a50; margin-bottom:10px;">提示：将新合成的物品再次投入炉中，可触发科技大爆炸！</div>
                 <div id="quest-panel-list"></div>
             </div>
     
             <!-- 新增：藏经阁（商店）面板 -->
             <div class="store-panel">
-                <h3>🏪 藏经阁 (黑市)</h3>
-                <div style="font-size: 0.8em; color:#666; margin-bottom:10px;">消耗灵感，兑换残卷获取配方提示！</div>
+                <h3>🏪 藏经阁</h3>
+                <div style="font-size: 0.8em; color:#8a7a50; margin-bottom:10px;">消耗灵感，兑换残卷获取配方提示！</div>
                 <div id="store-list"></div>
             </div>
         </div>
@@ -467,29 +527,28 @@
     
         <div class="right-panel">
         <div id="collection-area">
-            <div style="width: 100%; color: #8b3a3a; font-size: 14px; margin-bottom: 5px; font-weight:bold;">🎒 我的造物库 (点击放入炉中)：
-            </div>
+            <div style="width: 100%; color: #f4d03f; font-size: 14px; margin-bottom: 8px; font-weight:bold; border-bottom: 1px solid #7e5109; padding-bottom: 6px;">🎒 我的造物库 (点击放入炉中)</div>
             <!-- 新增分类筛选面板 -->
-            <div class="category-filter">
-                <label>分类筛选：</label>
+            <div class="category-filter" style="display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-bottom:8px;">
+                <span style="color:#c0a060; font-size:0.82em;">分类：</span>
                 <button class="category-btn active" data-category="all">全部</button>
                 <button class="category-btn" data-category="原材料">原材料</button>
                 <button class="category-btn" data-category="中间产物">中间产物</button>
-                <button class="category-btn" data-category="农业与食品">农业与食品</button>
-                <button class="category-btn" data-category="工具与机械">工具与机械</button>
-                <button class="category-btn" data-category="文教与传播">文教与传播</button>
-                <button class="category-btn" data-category="建筑与工程">建筑与工程</button>
-                <button class="category-btn" data-category="医学与药材">医学与药材</button>
-                <button class="category-btn" data-category="武器与防御">武器与防御</button>
-                <span class="category-stats" id="category-stats">共收集：0 种 / 总计：50+ 种</span>
+                <button class="category-btn" data-category="农业与食品">农产</button>
+                <button class="category-btn" data-category="工具与机械">机械</button>
+                <button class="category-btn" data-category="文教与传播">文教</button>
+                <button class="category-btn" data-category="建筑与工程">建筑</button>
+                <button class="category-btn" data-category="医学与药材">医药</button>
+                <button class="category-btn" data-category="武器与防御">武防</button>
             </div>
+            <span class="category-stats" id="category-stats" style="display:block; margin-bottom:6px;">共收集：0 种 / 总计：50+ 种</span>
             <!-- 分类分组的造物展示区域 -->
             <div id="collection-items-container"></div>
         </div>
     
             <div class="info-panel" id="info-panel">
-                <h3 style="margin-top: 0; color:#8b3a3a; border-bottom:1px solid #ddd; padding-bottom:5px;">新造物出炉！</h3>
-                <p id="culture-text"></p>
+                <h3 style="margin-top: 0; color:#f4d03f; border-bottom:1px solid #7e5109; padding-bottom:5px;">🏺 新造物出炉！</h3>
+                <p id="culture-text" style="color:#f0e0c0;"></p>
             </div>
         </div>
     </div>
@@ -561,11 +620,11 @@
                             questList.filter(q => q.purchased).forEach(q => {
                                 const done = q.goals.every(goal => unlockedItems.has(goal));
                                 html += `
-                <div class="quest-item" style="${done ? 'background:#fafad2;opacity:0.8;' : ''}">
-                  <strong>${q.name}${done ? ' <span style="color:green;">✔ 已完成</span>' : ''}</strong><br>
-                  ${q.desc}<br>
-                  <span style="color:#8b3a3a">目标：${q.goals.map(goal => unlockedItems.has(goal) ? `<span style="color:green;font-weight:bold;">【${goal}】</span>` : `【${goal}】`).join(' 与 ')}</span><br>
-                  <span style="font-size: 0.85em; color: gray;">(提示：${q.hint})</span>
+                <div class="quest-item" style="${done ? 'opacity:0.7;' : ''}">
+                  <strong>${q.name}${done ? ' <span style="color:#7ec87e;">✔ 已完成</span>' : ''}</strong><br>
+                  <span style="color:#d4c4a0">${q.desc}</span><br>
+                  <span style="color:#c0a060">目标：${q.goals.map(goal => unlockedItems.has(goal) ? `<span style="color:#7ec87e;font-weight:bold;">【${goal}】</span>` : `【${goal}】`).join(' 与 ')}</span><br>
+                  <span style="font-size: 0.85em; color: #7a6a4a;">💡 ${q.hint}</span>
                 </div>`;
                             });
                             document.getElementById('quest-panel-list').innerHTML = html;
@@ -581,8 +640,8 @@
                                 unpurchased.forEach(q => {
                                     html += `
                     <div class="store-item">
-                        <strong>📜 ${q.name}</strong>
-                        <span style="color:#555; font-size:0.9em;">解锁配方提示...</span>
+                        <strong style="color:#f4d03f;">📜 ${q.name}</strong>
+                        <span style="color:#b0a080; font-size:0.9em;">解锁配方提示...</span>
                         <button class="buy-btn" data-cost="${q.cost}" onclick="buyQuest('${q.id}')">
                             消耗 ${q.cost} 灵感
                         </button>
@@ -1123,7 +1182,7 @@
 
         // 如果没有收集任何物品
         if (collectedCount === 0) {
-            container.innerHTML = '<div style="width:100%; text-align:center; color:#888; padding:20px;">暂无造物，快去炼丹吧！</div>';
+            container.innerHTML = '<div style="width:100%; text-align:center; color:#6a5a30; padding:20px;">暂无造物，快去炼丹吧！</div>';
             return;
         }
 
@@ -1156,7 +1215,7 @@
             if (items.length === 0) {
                 // 筛选特定分类但无物品时提示
                 if (currentActiveCategory === category) {
-                    container.innerHTML = `<div style="width:100%; text-align:center; color:#888; padding:20px;">暂无【${category}】类造物</div>`;
+                    container.innerHTML = `<div style="width:100%; text-align:center; color:#6a5a30; padding:20px;">暂无【${category}】类造物</div>`;
                 }
                 return;
             }
@@ -1325,6 +1384,7 @@
         let pointerDir = 1;
         const pointerSpeed = 2.0; // 指针移动速度
         let isQteActive = false;
+        // 旧版QTE变量已移除，统一使用轮盘QTE
 
         // 交互逻辑
         function addIngredient(elementName) {
