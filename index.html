@@ -16,6 +16,10 @@
             padding: 20px;
             margin: 0;
             background-image: url('./assets/bg.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             background-color: #1a1a1a;
         }
 
@@ -497,22 +501,57 @@
                             id: 'qmyss', name: '《齐民要术》残卷',
                             desc: '“水土交融，万物生发。木石相击，利器方成。”',
                             goals: ['锄头/农具 🪓', '水渠/沟渠 🛤️'],
-                            hint: '合成路径举例：\n土 + 金 = 磁石 🧲 → 木 + 金 = 锄头/农具 🪓；\n土 + 水 = 泥巴 🟤 → 泥巴 + 水 = 水渠/沟渠 🛤️',
+                            hint: '水土交融化为泥，泥再遇水则成渠；金石相磨可成磁，磁与木合方为导。',
                             cost: 0, purchased: true // 初始免费赠送
                         },
                         {
                             id: 'mxbt', name: '《梦溪笔谈》残卷',
                             desc: '“方家以磁石磨针锋，则能指南...”',
                             goals: ['指南针 🧭'],
-                            hint: '土 + 金 = 磁石 🧲，再用磁石 🧲 + 木 🪵 = 指南针 🧭',
+                            hint: '土中藏金，可吸万物；与木相合，方指南北。',
                             cost: 150, purchased: false // 需要购买
                         },
                         {
                             id: 'tgkw', name: '《天工开物》残卷',
                             desc: '“风声雨声，典籍不灭；巨舰火炮，威震四海。”',
                             goals: ['太学/书院 🏛️', '罗盘远洋宝船 🛳️'],
-                            hint: '太学/书院 🏛️ ：书卷/典籍 📚 + 土木建筑 ⛩️\n罗盘远洋宝船 🛳️ ：指南针 🧭 + 风帆木船 ⛵\n（需先合成造纸术及相关中阶产物）',
+                            hint: '典籍需土木为基，航海需帆与指南；先有纸与墨，方有文明之光。',
                             cost: 300, purchased: false // 需要购买
+                        },
+                        {
+                            id: 'bcgm', name: '《本草纲目》残卷',
+                            desc: '"药有个性之奇，方有合群之妙。"',
+                            goals: ['熬制汤药 🥣', '炒制茶叶 🍵'],
+                            hint: '沸汽蒸腾可出药性，草木遇炭方得茶香。',
+                            cost: 350, purchased: false
+                        },
+                        {
+                            id: 'kgj', name: '《考工记》残卷',
+                            desc: '"百工之事，皆圣人之作也。"',
+                            goals: ['百炼钢 ⚔️', '织布机 🧵'],
+                            hint: '炭火炼真金，千锤成钢；木为骨架，麻可织机。',
+                            cost: 400, purchased: false
+                        },
+                        {
+                            id: 'nzqs', name: '《农政全书》残卷',
+                            desc: '"水利为农业之本，机械为灌溉之具。"',
+                            goals: ['木制水车 🎡', '都江堰水利工程 🏞️'],
+                            hint: '水循渠行，木转轮动；土木相合，泽被千里。',
+                            cost: 450, purchased: false
+                        },
+                        {
+                            id: 'hgjn', name: '《黄帝内经》残卷',
+                            desc: '"上医治未病，百病皆可药。"',
+                            goals: ['针灸铜人模型 🧍', '药酒/麻沸散 🍷'],
+                            hint: '酒能融药性，铜可铸经络；根入酒中方成药，铜模刻穴传针道。',
+                            cost: 500, purchased: false
+                        },
+                        {
+                            id: 'wzzy', name: '《武经总要》残卷',
+                            desc: '"兵者，国之大事，死生之地，存亡之道。"',
+                            goals: ['火炮/火枪 🔫', '锻铁兵器 ⚔️'],
+                            hint: '火药遇钢，雷霆万钧；百炼之钢，木柄为兵。',
+                            cost: 600, purchased: false
                 }
                 ];
 
